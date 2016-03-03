@@ -4,10 +4,10 @@ Date:   Thu Mar 3 10:40:08 2016 +0000
 
     Pugpig file locking fixes
 
-diff --git a/pugpig/extensions/advancedtypes/adpackage/adpackage.module b/pugpig/extensions/advancedtypes/adpackage/adpackage.module
+diff --git a/modules/contrib/pugpig/extensions/advancedtypes/adpackage/adpackage.module b/modules/contrib/pugpig/extensions/advancedtypes/adpackage/adpackage.module
 index 07a3e90..3eb7c2a 100644
---- a/pugpig/extensions/advancedtypes/adpackage/adpackage.module
-+++ b/pugpig/extensions/advancedtypes/adpackage/adpackage.module
+--- a/modules/contrib/pugpig/extensions/advancedtypes/adpackage/adpackage.module
++++ b/modules/contrib/pugpig/extensions/advancedtypes/adpackage/adpackage.module
 @@ -142,22 +142,21 @@ function _pugpig_adpackage_get_ad_package($node, $return_manifest_contents = FAL
    $lock_file = _pugpig_adpackage_get_lock_file($node);
  
