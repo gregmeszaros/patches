@@ -1,0 +1,43 @@
+commit 1e147b77621a8d70f6bb92b0c96afe8252b98e7d
+Author: gregmeszaros <meszaros275@gmail.com>
+Date:   Thu Mar 3 10:40:08 2016 +0000
+
+    Pugpig file locking fixes
+
+diff --git a/pugpig/extensions/advancedtypes/adpackage/adpackage.module b/pugpig/extensions/advancedtypes/adpackage/adpackage.module
+index 07a3e90..3eb7c2a 100644
+--- a/pugpig/extensions/advancedtypes/adpackage/adpackage.module
++++ b/pugpig/extensions/advancedtypes/adpackage/adpackage.module
+@@ -142,22 +142,21 @@ function _pugpig_adpackage_get_ad_package($node, $return_manifest_contents = FAL
+   $lock_file = _pugpig_adpackage_get_lock_file($node);
+ 
+   $fp = fopen($lock_file, "w");
+-  if (flock($fp, LOCK_EX)) {
+-  
+-   try {
++
++  // ------- CUSTOM PATCH FOR FILE LOCKING ON PLATFORM.SH - START --------
++  if (lock_acquire('_pugpig_adpackage_get_ad_package_locked')) {
++    try {
+       $ret = _pugpig_adpackage_get_ad_package_locked($node, $return_manifest_contents);
+-    } catch (Exception $e) {
++    } 
++    catch (Exception $e) {
+       pugpig_set_message('Packaging Error' . $e->getMessage() . '<br />', 'error');
+     }
++ 
++    lock_release('_pugpig_adpackage_get_ad_package_locked');
++  }
++  // ------- CUSTOM PATCH FOR FILE LOCKING ON PLATFORM.SH - END --------
+ 
+-    flock($fp, LOCK_UN);
+-    // fclose($fp);
+-    // unlink($lock_file);
+-    
+-  } 
+-  
+   return $ret;
+-  
+ }
+ 
+ // Keep an array of failed attempts so we don't try more than once on the same request
